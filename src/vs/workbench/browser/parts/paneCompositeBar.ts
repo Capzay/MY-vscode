@@ -826,7 +826,7 @@ export class PaneCompositeBar extends Disposable {
 		const viewContainer = this.viewDescriptorService.getViewContainerById(id);
 		return viewContainer &&
 			this.viewDescriptorService.getViewContainerLocation(viewContainer) ===
-				this.location
+			this.location
 			? viewContainer
 			: undefined;
 	}
@@ -964,7 +964,7 @@ export class PaneCompositeBar extends Disposable {
 					name: viewContainerModel.title,
 					icon:
 						URI.isUri(viewContainerModel.icon) &&
-						this.environmentService.remoteAuthority
+							this.environmentService.remoteAuthority
 							? undefined
 							: viewContainerModel.icon, // Do not cache uri icons with remote connection
 					views,
@@ -1272,7 +1272,7 @@ class ViewContainerActivityAction extends CompositeBarAction {
 		const now = Date.now();
 		if (
 			now >
-				this.lastRun /* https://github.com/microsoft/vscode/issues/25830 */ &&
+			this.lastRun /* https://github.com/microsoft/vscode/issues/25830 */ &&
 			now - this.lastRun < ViewContainerActivityAction.preventDoubleClickDelay
 		) {
 			return;
@@ -1319,7 +1319,7 @@ class ViewContainerActivityAction extends CompositeBarAction {
 	}
 }
 
-class PlaceHolderViewContainerActivityAction extends ViewContainerActivityAction {}
+class PlaceHolderViewContainerActivityAction extends ViewContainerActivityAction { }
 
 class PlaceHolderToggleCompositePinnedAction extends ToggleCompositePinnedAction {
 	constructor(id: string, compositeBar: ICompositeBar) {

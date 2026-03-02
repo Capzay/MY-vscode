@@ -249,7 +249,7 @@ export class ActivitybarPart extends Part {
 				fillExtraContextMenuActions: (
 					actions,
 					e?: MouseEvent | GestureEvent,
-				) => {},
+				) => { },
 				compositeSize: 52,
 				colors: (theme: IColorTheme) => ({
 					activeForegroundColor: theme.getColor(ACTIVITY_BAR_FOREGROUND),
@@ -306,13 +306,13 @@ export class ActivitybarPart extends Part {
 		super.updateStyles();
 
 		const container = assertReturnsDefined(this.getContainer());
-		const background = this.getColor(ACTIVITY_BAR_BACKGROUND) || "";
+		const background = this.getColor(ACTIVITY_BAR_BACKGROUND) || '';
 		container.style.backgroundColor = background;
 
 		const borderColor =
-			this.getColor(ACTIVITY_BAR_BORDER) || this.getColor(contrastBorder) || "";
+			this.getColor(ACTIVITY_BAR_BORDER) || this.getColor(contrastBorder) || '';
 		container.classList.toggle('bordered', !!borderColor);
-		container.style.borderColor = borderColor ? borderColor : "";
+		container.style.borderColor = borderColor ? borderColor : '';
 	}
 
 	show(focus?: boolean): void {
