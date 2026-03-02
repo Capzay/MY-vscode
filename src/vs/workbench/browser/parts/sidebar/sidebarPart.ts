@@ -203,6 +203,7 @@ export class SidebarPart extends AbstractPaneCompositePart {
 			icon: true,
 			orientation: ActionsOrientation.HORIZONTAL,
 			recomputeSizes: true,
+			showDropdownMenu: true,
 			activityHoverOptions: {
 				position: () => this.getCompositeBarPosition() === CompositeBarPosition.BOTTOM ? HoverPosition.ABOVE : HoverPosition.BELOW,
 			},

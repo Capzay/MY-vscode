@@ -202,5 +202,11 @@
 	],
 	"azureMcp.serverMode": "all",
 	"azureMcp.readOnly": true,
-	"debug.breakpointsView.presentation": "tree"
+	"debug.breakpointsView.presentation": "tree",
+	"python-envs.defaultEnvManager": "ms-python.python:system",
+	"python-envs.pythonProjects": [],
+	// --- Custom Theme & Layout ---
+	"workbench.colorTheme": "Pitch Black",
+	"workbench.activityBar.location": "top",
+	"workbench.activityBar.autoHide": false
 }

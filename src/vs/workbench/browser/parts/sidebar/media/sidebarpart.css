@@ -72,6 +72,11 @@
 .monaco-workbench .part.sidebar > .title > .composite-bar-container > .composite-bar > .monaco-action-bar .action-item .action-label,
 .monaco-workbench .part.sidebar > .header-or-footer > .composite-bar-container > .composite-bar > .monaco-action-bar .action-item .action-label {
 	outline-offset: 2px;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .hc-black .monaco-workbench .part.sidebar > .title > .composite-bar-container > .composite-bar > .monaco-action-bar .action-item .action-label,
@@ -83,8 +88,8 @@
 
 .monaco-workbench .part.sidebar > .title > .composite-bar-container > .composite-bar > .monaco-action-bar .action-item .action-label::before,
 .monaco-workbench .part.sidebar > .header-or-footer > .composite-bar-container > .composite-bar > .monaco-action-bar .action-item .action-label::before {
-	position: absolute;
-	left: 5px; /* place icon in center */
+	position: relative;
+	left: 0; /* center icon */
 }
 
 .monaco-workbench .part.sidebar > .header-or-footer.header > .composite-bar-container > .composite-bar > .monaco-action-bar .action-item.checked:not(:focus) .active-item-indicator:before,
@@ -123,4 +128,227 @@
 
 .monaco-workbench .sidebar.pane-composite-part > .title.has-composite-bar > .title-actions .monaco-action-bar .action-item {
 	max-width: 150px;
+}
+
+/* Modern horizontal activity bar in sidebar - clean, minimal design */
+
+/* Container - minimal padding, flexbox layout */
+.monaco-workbench .part.sidebar > .title > .composite-bar-container > .composite-bar.horizontal {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	padding: 4px 8px;
+	gap: 2px;
+	background-color: transparent;
+	width: 100%;
+	height: auto !important;
+}
+
+.monaco-workbench .part.sidebar > .title > .composite-bar-container > .composite-bar.horizontal > .monaco-action-bar {
+	display: flex !important;
+	flex-direction: row;
+	align-items: center;
+	width: 100%;
+	height: auto !important;
+	line-height: normal !important;
+}
+
+.monaco-workbench .part.sidebar > .title > .composite-bar-container > .composite-bar.horizontal > .monaco-action-bar > .actions-container {
+	display: flex !important;
+	flex-direction: row;
+	align-items: center;
+	gap: 2px;
+	height: auto !important;
+}
+
+/* Action items - pure flex centering, NO backgrounds */
+.monaco-workbench .part.sidebar > .title > .composite-bar-container > .composite-bar.horizontal .action-item {
+	width: 28px !important;
+	height: 28px !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	padding: 0 !important;
+	background: transparent !important;
+	flex-shrink: 0;
+	text-transform: none !important;
+	font-size: inherit !important;
+	position: relative !important;
+}
+
+/* Override paneCompositePart styles for icon items */
+.monaco-workbench .part.sidebar > .title > .composite-bar-container > .composite-bar.horizontal .action-item.icon {
+	width: 28px !important;
+	height: 28px !important;
+	padding: 0 !important;
+}
+
+/* Action label - stay in flex flow, NOT absolute positioned */
+.monaco-workbench .part.sidebar > .title > .composite-bar-container > .composite-bar.horizontal .action-item .action-label {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: auto !important;
+	height: auto !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	font-size: 16px !important;
+	line-height: 1 !important;
+	opacity: 0.6;
+	transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+/* Hover - opacity + subtle scale */
+.monaco-workbench .part.sidebar > .title > .composite-bar-container > .composite-bar.horizontal .action-item:hover .action-label {
+	opacity: 1;
+	transform: scale(1.1);
+}
+
+/* Active/checked - full opacity */
+.monaco-workbench .part.sidebar > .title > .composite-bar-container > .composite-bar.horizontal .action-item.checked .action-label {
+	opacity: 1;
+}
+
+/* Codicon centering */
+.monaco-workbench .part.sidebar > .title > .composite-bar-container > .composite-bar.horizontal .action-item .action-label.codicon::before {
+	display: block !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	line-height: 1 !important;
+	font-size: 16px !important;
+}
+
+/* Ensure custom icons (from extensions) are centered */
+.monaco-workbench .part.sidebar > .title > .composite-bar-container > .composite-bar.horizontal .action-item .action-label.uri-icon {
+	background-size: 16px 16px !important;
+	background-position: center center !important;
+	background-repeat: no-repeat !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+.monaco-workbench .part.sidebar > .title > .composite-bar-container > .composite-bar.horizontal .action-item .action-label.uri-icon::before {
+	content: '' !important;
+	display: block !important;
+	width: 16px !important;
+	height: 16px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+/* Extension icon support - ensure mask icons are centered */
+.monaco-workbench .part.sidebar > .title > .composite-bar-container > .composite-bar.horizontal .action-item .action-label[style*="mask"] {
+	-webkit-mask-position: center center !important;
+	mask-position: center center !important;
+	-webkit-mask-size: 16px 16px !important;
+	mask-size: 16px 16px !important;
+	-webkit-mask-repeat: no-repeat !important;
+	mask-repeat: no-repeat !important;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+/* Active indicator for horizontal activity bar - hidden */
+.monaco-workbench .part.sidebar > .title > .composite-bar-container > .composite-bar.horizontal .action-item .active-item-indicator {
+	display: none;
+}
+
+/* Dropdown chevron button - minimal style */
+.monaco-workbench .part.sidebar .composite-bar-dropdown {
+	margin-left: auto;
+	opacity: 0.6;
+	transition: opacity 0.15s ease, transform 0.15s ease;
+	width: 28px;
+	height: 28px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.monaco-workbench .part.sidebar .composite-bar-dropdown:hover {
+	opacity: 1;
+	transform: scale(1.1);
+}
+
+/* Badge support for activity bar items */
+.monaco-workbench .part.sidebar > .title > .composite-bar-container > .composite-bar.horizontal .action-item .badge {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	min-width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	pointer-events: none;
+}
+
+.monaco-workbench .part.sidebar > .title > .composite-bar-container > .composite-bar.horizontal .action-item .badge-content {
+	font-size: 9px;
+	font-weight: 600;
+	padding: 2px 4px;
+	min-width: 14px;
+	height: 14px;
+	border-radius: 7px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Dropdown menu styling */
+.monaco-workbench .composite-dropdown-menu .action-item {
+	padding: 8px 12px;
+	border-radius: 4px;
+	transition: background-color 0.1s ease;
+	display: flex;
+	align-items: center;
+	min-height: 32px;
+}
+
+.monaco-workbench .composite-dropdown-menu .action-item:hover {
+	background-color: rgba(255, 255, 255, 0.05);
+}
+
+.monaco-workbench .composite-dropdown-menu .action-item .codicon {
+	margin-right: 8px;
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.monaco-workbench .composite-dropdown-menu .composite-icon {
+	margin-right: 8px;
+	width: 16px;
+	height: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.monaco-workbench .composite-dropdown-menu .composite-name {
+	flex: 1;
+	margin-right: 12px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.monaco-workbench .composite-dropdown-menu .composite-keybinding {
+	opacity: 0.5;
+	font-size: 0.85em;
+	margin-right: 12px;
+	white-space: nowrap;
+}
+
+.monaco-workbench .composite-dropdown-menu .composite-pin {
+	width: 16px;
+	opacity: 0.4;
+	transition: opacity 0.1s ease;
+	flex-shrink: 0;
+}
+
+.monaco-workbench .composite-dropdown-menu .composite-pin:hover {
+	opacity: 1;
 }

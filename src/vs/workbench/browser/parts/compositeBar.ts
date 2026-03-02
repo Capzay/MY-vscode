@@ -22,6 +22,7 @@ import { IComposite } from '../../common/composite.js';
 import { CompositeDragAndDropData, CompositeDragAndDropObserver, IDraggedCompositeData, ICompositeDragAndDrop, Before2D, toggleDropEffect, ICompositeDragAndDropObserverCallbacks } from '../dnd.js';
 import { Gesture, EventType as TouchEventType, GestureEvent } from '../../../base/browser/touch.js';
 import { MutableDisposable } from '../../../base/common/lifecycle.js';
+import { CompositeBarDropdownAction, CompositeBarDropdownActionViewItem, ICompositeDropdownItem } from './compositeBarDropdownAction.js';
 
 export interface ICompositeBarItem {
 
@@ -148,6 +149,7 @@ export interface ICompositeBarOptions {
 	readonly dndHandler: ICompositeDragAndDrop;
 	readonly activityHoverOptions: IActivityHoverOptions;
 	readonly preventLoopNavigation?: boolean;
+	readonly showDropdownMenu?: boolean;
 
 	readonly getActivityAction: (compositeId: string) => CompositeBarAction;
 	readonly getCompositePinnedAction: (compositeId: string) => IAction;
@@ -158,6 +160,7 @@ export interface ICompositeBarOptions {
 
 	readonly openComposite: (compositeId: string, preserveFocus?: boolean) => Promise<IComposite | null>;
 	readonly getDefaultCompositeId: () => string | undefined;
+	readonly getDropdownItems?: () => ICompositeDropdownItem[];
 }
 
 class CompositeBarDndCallbacks implements ICompositeDragAndDropObserverCallbacks {
@@ -242,6 +245,8 @@ export class CompositeBar extends Widget implements ICompositeBar {
 	private compositeSwitcherBar: ActionBar | undefined;
 	private compositeOverflowAction = this._register(new MutableDisposable<CompositeOverflowActivityAction>());
 	private compositeOverflowActionViewItem = this._register(new MutableDisposable<CompositeOverflowActivityActionViewItem>());
+	private compositeDropdownAction = this._register(new MutableDisposable<CompositeBarDropdownAction>());
+	private compositeDropdownActionViewItem = this._register(new MutableDisposable<CompositeBarDropdownActionViewItem>());
 
 	private readonly model: CompositeBarModel;
 	private readonly visibleComposites: string[];
@@ -289,6 +294,9 @@ export class CompositeBar extends Widget implements ICompositeBar {
 			actionViewItemProvider: (action, options) => {
 				if (action instanceof CompositeOverflowActivityAction) {
 					return this.compositeOverflowActionViewItem.value;
+				}
+				if (action instanceof CompositeBarDropdownAction) {
+					return this.compositeDropdownActionViewItem.value;
 				}
 				const item = this.model.findItem(action.id);
 				return item && this.instantiationService.createInstance(
@@ -632,6 +640,31 @@ export class CompositeBar extends Widget implements ICompositeBar {
 			);
 
 			compositeSwitcherBar.push(this.compositeOverflowAction.value, { label: false, icon: true });
+		}
+
+		// Add dropdown menu for horizontal orientation (Cursor-style)
+		if (this.options.orientation === ActionsOrientation.HORIZONTAL && this.options.showDropdownMenu && !this.compositeDropdownAction.value && this.options.getDropdownItems) {
+			this.compositeDropdownAction.value = this.instantiationService.createInstance(CompositeBarDropdownAction, () => {
+				this.compositeDropdownActionViewItem.value?.showMenu();
+			});
+			this.compositeDropdownActionViewItem.value = this.instantiationService.createInstance(
+				CompositeBarDropdownActionViewItem,
+				this.compositeDropdownAction.value,
+				() => this.options.getDropdownItems ? this.options.getDropdownItems() : [],
+				() => this.model.activeItem ? this.model.activeItem.id : undefined,
+				(compositeId: string) => this.options.openComposite(compositeId, false),
+				(compositeId: string) => {
+					if (this.isPinned(compositeId)) {
+						this.unpin(compositeId);
+					} else {
+						this.pin(compositeId, true);
+					}
+				},
+				this.options.colors,
+				this.options.activityHoverOptions
+			);
+
+			compositeSwitcherBar.push(this.compositeDropdownAction.value, { label: false, icon: true });
 		}
 
 		if (!donotTrigger) {
